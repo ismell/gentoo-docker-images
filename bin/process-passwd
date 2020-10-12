@@ -1,0 +1,114 @@
+#!/bin/bash
+
+set -eu -o pipefail
+
+function parse_file() {
+	local filename="$1"
+	local -n item_map="$2"
+
+	local line name pass other
+	local -i uid
+
+	while read -r line
+	do
+		IFS=: read -r name pass uid other <<< "$line"
+		item_map[$uid]="$line"
+	done < "$filename"
+}
+
+function merge-passwd() {
+	local orig_file="${1}"
+	local extra_file="${2}"
+	local target_file="${3}"
+
+	local -A "ORIG_MAP"
+	parse_file "$orig_file" ORIG_MAP
+
+	local -A "EXTRA_MAP"
+	parse_file "$extra_file" EXTRA_MAP
+
+	local -a uids
+	readarray -t uids <<<"$(
+		printf "%s\n" "${!ORIG_MAP[@]}" "${!EXTRA_MAP[@]}" | \
+			sort -n | uniq
+	)"
+
+	local -i uid
+	local -a items
+
+	for uid in "${uids[@]}"
+	do
+		if [[ -v EXTRA_MAP[$uid] ]]; then
+			items+=("${EXTRA_MAP[$uid]}")
+		else
+			items+=("${ORIG_MAP[$uid]}")
+		fi
+	done
+
+	printf "%s\n" "${items[@]}" > "$target_file"
+}
+
+function split-passwd() {
+	local orig_file="${1}"
+	local complete_file="${2}"
+	local target_file="${3}"
+
+	local -A "ORIG_MAP"
+	parse_file "$orig_file" ORIG_MAP
+
+	local -A "COMPLETE_MAP"
+	parse_file "$complete_file" COMPLETE_MAP
+
+	local -a uids
+	readarray -t uids <<<"$(
+		printf "%s\n" "${!COMPLETE_MAP[@]}" | \
+			sort -n | uniq
+	)"
+
+	local -i uid
+	local -a items
+
+	for uid in "${uids[@]}"
+	do
+		if [[ -v ORIG_MAP[$uid] ]]; then
+			if [[ "${ORIG_MAP[$uid]}" == "${COMPLETE_MAP[$uid]}" ]]; then
+				continue
+			fi
+			items+=("${COMPLETE_MAP[$uid]}")
+		else
+			items+=("${COMPLETE_MAP[$uid]}")
+		fi
+	done
+
+	printf "%s\n" "${items[@]}" > "$target_file"
+}
+
+case "$(basename "$0")" in
+merge-passwd)
+	merge-passwd \
+		"${1:-/etc/passwd.orig}" \
+		"${2:-/config/passwd}" \
+		"${3:-/etc/passwd}"
+	;;
+merge-group)
+	merge-passwd \
+		"${1:-/etc/group.orig}" \
+		"${2:-/config/group}" \
+		"${3:-/etc/group}"
+	;;
+split-passwd)
+	split-passwd \
+		"${1:-/etc/passwd.orig}" \
+		"${2:-/etc/passwd}" \
+		"${3:-/config/passwd}"
+	;;
+split-group)
+	split-passwd \
+		"${1:-/etc/group.orig}" \
+		"${2:-/etc/group}" \
+		"${3:-/config/group}"
+	;;
+*)
+	echo "Unknown"
+	exit 1
+esac

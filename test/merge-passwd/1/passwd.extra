@@ -1,0 +1,3 @@
+root:x:0:0:root:/home/root:/bin/bash
+admin:x:1000:1000::/home/admin:/bin/bash
+bob:x:1001:1001::/home/bob:/bin/bash

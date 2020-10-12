@@ -1,0 +1,13 @@
+#!/bin/bash -x
+
+set -eu -o pipefail
+
+SPLIT="../../../bin/split-passwd"
+
+TARGET="$(mktemp)"
+"$SPLIT" "passwd.orig" "passwd" "$TARGET"
+
+if ! diff -u "passwd.extra" "$TARGET"; then
+	echo "Diff failed"
+	exit 1
+fi
