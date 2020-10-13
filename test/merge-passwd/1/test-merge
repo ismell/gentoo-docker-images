@@ -5,14 +5,14 @@ set -eu -o pipefail
 MERGE="../../../bin/merge-passwd"
 
 TARGET="$(mktemp)"
-"$MERGE" "passwd.orig" "passwd.extra" "$TARGET"
+"$MERGE" "passwd" "passwd.orig" "passwd.extra" "$TARGET"
 
 if ! diff -u "passwd" "$TARGET"; then
 	echo "Diff failed"
 	exit 1
 fi
 
-"$MERGE" "passwd.extra" "passwd.orig" "$TARGET"
+"$MERGE" "passwd.reversed" "passwd.extra" "passwd.orig" "$TARGET"
 
 if ! diff -u "passwd.reversed" "$TARGET"; then
 	diff -u "passwd.reversed" "$TARGET"

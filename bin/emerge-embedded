@@ -1,4 +1,4 @@
 #!/bin/bash -e
 
-exec emerge --root=/build --sysroot=/build --config-root=/build --root-deps "$@"
+exec emerge --root=/build --sysroot=/build --config-root=/ --root-deps "$@"
 

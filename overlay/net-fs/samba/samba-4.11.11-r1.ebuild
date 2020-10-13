@@ -40,12 +40,13 @@ MULTILIB_WRAPPED_HEADERS=(
 
 BDEPEND="
 	dev-lang/perl:=
+	${PYTHON_DEPS}
+	virtual/pkgconfig
 "
 #	sys-libs/libcap
 #	sys-libs/ncurses:0=
 #	sys-libs/readline:0=
 #	sys-libs/e2fsprogs-libs[${MULTILIB_USEDEP}]
-#	>=app-arch/libarchive-3.1.2[${MULTILIB_USEDEP}]
 #	dev-libs/libbsd[${MULTILIB_USEDEP}]
 #	dev-libs/libtasn1[${MULTILIB_USEDEP}]
 #	dev-libs/popt[${MULTILIB_USEDEP}]
@@ -58,6 +59,7 @@ CDEPEND="
 	>=sys-libs/talloc-2.2.0[python?,${PYTHON_SINGLE_USEDEP},${MULTILIB_USEDEP}]
 	>=sys-libs/tdb-1.4.2[python?,${PYTHON_SINGLE_USEDEP},${MULTILIB_USEDEP}]
 	>=sys-libs/tevent-0.10.0[python?,${PYTHON_SINGLE_USEDEP},${MULTILIB_USEDEP}]
+	>=app-arch/libarchive-3.1.2[${MULTILIB_USEDEP}]
 	sys-libs/zlib[${MULTILIB_USEDEP}]
 	virtual/libiconv
 	pam? ( sys-libs/pam )
@@ -92,12 +94,11 @@ CDEPEND="
 #	net-libs/libtirpc[${MULTILIB_USEDEP}]
 
 DEPEND="${CDEPEND}
-	${PYTHON_DEPS}
-	virtual/pkgconfig
 	|| (
 		net-libs/rpcsvc-proto
 		<sys-libs/glibc-2.26[rpc(+)]
 	)
+	>=dev-util/cmocka-1.1.1[${MULTILIB_USEDEP}]
 	test? (
 		!system-mitkrb5? (
 			>=sys-libs/nss_wrapper-1.1.3
@@ -105,7 +106,6 @@ DEPEND="${CDEPEND}
 			>=net-libs/socket_wrapper-1.1.9
 			>=sys-libs/uid_wrapper-1.2.1
 		)
-		>=dev-util/cmocka-1.1.1[${MULTILIB_USEDEP}]
 		$(python_gen_cond_dep "
 			dev-python/subunit[\${PYTHON_MULTI_USEDEP},${MULTILIB_USEDEP}]
 		")

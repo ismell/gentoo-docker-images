@@ -1,0 +1,16 @@
+--- src/runit.orig.c    2020-10-09 14:39:30.334482968 -0000
++++ src/runit.c 2020-10-09 14:45:58.457307181 -0000
+@@ -299,6 +299,12 @@
+   strerr_warn2(INFO, "sending KILL signal to all processes...", 0);
+   kill(-1, SIGKILL);
+
++  /* If running in a PID namespace all we can do is exit */
++  if (stat("/proc/self/ns/pid", &s) != -1) {
++    strerr_warn2(INFO, "Exiting.", 0);
++    return(0);
++  }
++
+   pid =fork();
+   switch (pid) {
+   case  0:
+

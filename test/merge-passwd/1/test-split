@@ -5,7 +5,7 @@ set -eu -o pipefail
 SPLIT="../../../bin/split-passwd"
 
 TARGET="$(mktemp)"
-"$SPLIT" "passwd.orig" "passwd" "$TARGET"
+"$SPLIT" "passwd" "passwd.orig" "$TARGET"
 
 if ! diff -u "passwd.extra" "$TARGET"; then
 	echo "Diff failed"

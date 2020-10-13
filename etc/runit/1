@@ -1,0 +1,11 @@
+#!/bin/bash -x
+
+set -e -u -o pipefail
+
+if [[ -d /etc/runit/1.d ]]; then
+	while read -d $'\0' -r file ; do
+		"$file"
+	done < <(find "/etc/runit/1.d/" -executable -type f -print0)
+fi
+
+echo System Init Complet

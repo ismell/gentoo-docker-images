@@ -17,9 +17,18 @@ function parse_file() {
 }
 
 function merge-passwd() {
-	local orig_file="${1}"
-	local extra_file="${2}"
-	local target_file="${3}"
+	local complete_file="${1}"
+	local orig_file="${2}"
+	local extra_file="${3}"
+	local target_file="${4}"
+
+	if [[ ! -e "$orig_file" ]]; then
+		cp "$complete_file" "$orig_file"
+	fi
+
+	if [[ ! -e "$extra_file" ]]; then
+		return 0
+	fi
 
 	local -A "ORIG_MAP"
 	parse_file "$orig_file" ORIG_MAP
@@ -49,9 +58,13 @@ function merge-passwd() {
 }
 
 function split-passwd() {
-	local orig_file="${1}"
-	local complete_file="${2}"
+	local complete_file="${1}"
+	local orig_file="${2}"
 	local target_file="${3}"
+
+	if [[ ! -e "$orig_file" ]]; then
+		cp "$complete_file" "$orig_file"
+	fi
 
 	local -A "ORIG_MAP"
 	parse_file "$orig_file" ORIG_MAP
@@ -86,26 +99,28 @@ function split-passwd() {
 case "$(basename "$0")" in
 merge-passwd)
 	merge-passwd \
-		"${1:-/etc/passwd.orig}" \
-		"${2:-/config/passwd}" \
-		"${3:-/etc/passwd}"
+		"${1:-/etc/passwd}" \
+		"${2:-/etc/passwd.orig}" \
+		"${3:-/config/passwd}" \
+		"${4:-/etc/passwd}"
 	;;
 merge-group)
 	merge-passwd \
-		"${1:-/etc/group.orig}" \
-		"${2:-/config/group}" \
-		"${3:-/etc/group}"
+		"${1:-/etc/group}" \
+		"${2:-/etc/group.orig}" \
+		"${3:-/config/group}" \
+		"${4:-/etc/group}"
 	;;
 split-passwd)
 	split-passwd \
-		"${1:-/etc/passwd.orig}" \
-		"${2:-/etc/passwd}" \
+		"${1:-/etc/passwd}" \
+		"${2:-/etc/passwd.orig}" \
 		"${3:-/config/passwd}"
 	;;
 split-group)
 	split-passwd \
-		"${1:-/etc/group.orig}" \
-		"${2:-/etc/group}" \
+		"${1:-/etc/group}" \
+		"${2:-/etc/group.orig}" \
 		"${3:-/config/group}"
 	;;
 *)

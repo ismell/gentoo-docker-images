@@ -1,0 +1,28 @@
+#!/bin/bash -x
+
+set -eu -o pipefail
+
+mkdir -p /config
+
+if [[ ! -e /etc/passwd.orig ]]; then
+	cp /etc/passwd /etc/passwd.orig
+fi
+
+if [[ ! -e /etc/group.orig ]]; then
+	cp /etc/group /etc/group.orig
+fi
+
+merge-passwd
+merge-group
+
+case "$(basename "$0")" in
+useradd|userdel|usermod|vigr|vipw)
+	/usr/sbin/"$(basename "$0")" "$@"
+	;;
+*)
+	echo "Unknown"
+	exit 1
+esac
+
+split-passwd
+split-group
