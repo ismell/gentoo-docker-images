@@ -3,9 +3,6 @@
 set -e -o pipefail
 
 echo "Ctrl+Alt+Del"
-touch /etc/runit/reboot
-chmod 100 /etc/runit/reboot
-
 touch /etc/runit/stopit
 chmod 100 /etc/runit/stopit 
 

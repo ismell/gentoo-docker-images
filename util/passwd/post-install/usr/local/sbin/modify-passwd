@@ -16,7 +16,7 @@ merge-passwd
 merge-group
 
 case "$(basename "$0")" in
-useradd|userdel|usermod|vigr|vipw)
+useradd|userdel|usermod|groupadd|groupdel|deluser|vigr|vipw)
 	/usr/sbin/"$(basename "$0")" "$@"
 	;;
 *)

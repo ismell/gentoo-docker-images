@@ -1,0 +1,12 @@
+#!/bin/bash -x
+
+exec 2>&1
+
+set -eu -o pipefail
+
+testparm -s
+
+exec /usr/sbin/smbd -i --configfile=/config/samba/smb.conf \
+	--log-basename=/config/samba/logs \
+	--option="private dir=/config/samba/private" \
+	--option="state directory=/config/samba/state"
