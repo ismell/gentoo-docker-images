@@ -1,2 +1,3 @@
 net-fs/samba
 app-editors/vim
+sys-fs/inotify-tools

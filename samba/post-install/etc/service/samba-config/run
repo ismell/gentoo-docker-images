@@ -1,0 +1,16 @@
+#!/bin/bash
+
+exec 2>&1
+
+set -eu -o pipefail
+
+declare date time dir file
+while read -r date time file; do
+	echo "${date} ${time}: ${file} modified"
+	if testparm -s; then
+		smbcontrol all reload-config
+	else
+		echo "smb.conf is invalid!!"
+	fi
+done < <(inotifywait -m --timefmt '%Y-%m-%d %H:%M' --format '%T %w %f' \
+	-e close_write /config/samba/smb.conf)

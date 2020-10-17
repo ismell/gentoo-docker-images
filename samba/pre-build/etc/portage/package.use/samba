@@ -1,1 +1,1 @@
-net-fs/samba -pam -python -system-mitkrb5 -zeroconf -acl
+net-fs/samba -pam -system-mitkrb5 acl nls zeroconf
