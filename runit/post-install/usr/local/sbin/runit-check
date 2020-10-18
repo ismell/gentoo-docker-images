@@ -1,0 +1,12 @@
+#!/bin/bash -x
+
+set -e -u -o pipefail
+
+PATH=/usr/local/bin:/usr/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin
+
+declare -a SERVICES
+readarray -t SERVICES < <(find /etc/service/ -maxdepth 1 -mindepth 1 -type d)
+
+if [[ "${#SERVICES[@]}" -gt 0 ]]; then
+	sv check "${SERVICES[@]}"
+fi

@@ -90,7 +90,8 @@ RUN --mount=type=bind,target=/var/db/repos/gentoo,source=/var/db/repos/gentoo,fr
     rm -rfv /etc/runit/* /etc/service/*
 COPY runit/post-install/ /
 STOPSIGNAL SIGINT
-CMD /sbin/runit-init
+CMD ["/sbin/runit-init"]
+HEALTHCHECK --interval=10s CMD ["/usr/local/sbin/runit-check"]
 
 FROM binpkgs as samba-binpkgs
 COPY samba/pre-build/ /
