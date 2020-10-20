@@ -1,0 +1,9 @@
+#!/bin/bash -x
+
+exec 2>&1
+
+set -eu -o pipefail
+
+sv check /etc/service/dbus
+
+exec /usr/sbin/avahi-daemon --debug

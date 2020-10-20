@@ -1,1 +1,2 @@
-net-dns/avahi -dbus -introspection 
+# We need dbus so samba can register its shares with avahi
+net-dns/avahi dbus -introspection 

@@ -1,0 +1,12 @@
+#!/bin/bash -x
+
+exec 2>&1
+
+set -eu -o pipefail
+
+mkdir -p /run/dbus
+rm -vf /run/dbus.pid
+
+dbus-uuidgen --ensure
+
+exec dbus-daemon --system --nosyslog --nofork

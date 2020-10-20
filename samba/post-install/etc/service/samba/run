@@ -4,6 +4,8 @@ exec 2>&1
 
 set -eu -o pipefail
 
+sv check /etc/service/avahi
+
 testparm -s
 
 exec /usr/sbin/smbd -i --configfile=/config/samba/smb.conf \
