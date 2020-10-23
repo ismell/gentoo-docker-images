@@ -8,7 +8,4 @@ sv check /etc/service/avahi
 
 testparm -s
 
-exec /usr/sbin/smbd -i --configfile=/config/samba/smb.conf \
-	--log-basename=/config/samba/logs \
-	--option="private dir=/config/samba/private" \
-	--option="state directory=/config/samba/state"
+exec /usr/sbin/smbd --log-stdout --foreground
