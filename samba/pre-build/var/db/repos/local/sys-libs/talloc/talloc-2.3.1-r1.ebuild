@@ -31,12 +31,11 @@ RDEPEND="!elibc_FreeBSD? (
 "
 DEPEND="${RDEPEND}
 	sys-devel/gettext
-	dev-libs/libxslt
-	python? ( ${PYTHON_DEPS} )
 "
 
 BDEPEND="
 	${PYTHON_DEPS}
+	dev-libs/libxslt
 "
 
 WAF_BINARY="${S}/buildtools/bin/waf"
