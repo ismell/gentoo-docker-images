@@ -124,3 +124,4 @@ RUN --mount=type=bind,target=/var/db/repos/gentoo,source=/var/db/repos/gentoo,fr
 COPY samba/post-install/ /
 COPY util/passwd/post-install/ /
 VOLUME /config
+VOLUME /data
