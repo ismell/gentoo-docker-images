@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -eu -o pipefail
+
+if [[ "$#" -lt 1 ]]; then
+	echo "Usage: $0 <dir>"
+	exit 1;
+fi
+
+declare target_dir="$1"
+
+if [[ ! -d "$target_dir" ]]; then
+	echo "$1 must be a directory"
+	exit 1
+fi
+
+declare target_file="$1/.xattr-test"
+
+function finish() {
+	rm -f "$target_file"
+}
+trap finish EXIT
+
+if ! touch "$target_file"; then
+	echo "Failed to create test file $target_file";
+	exit 1
+fi
+
+declare -i max_size=0 current_size=1
+
+while [[ $current_size -le 64 ]]; do
+	declare value
+	value="$(shuf -zer -n "$((current_size * 1024))" {A..Z} | tr -d '\0')"
+	if setfattr -n user.test -v "$value" "$target_file" 2>/dev/null; then
+		setfattr -x user.test "$target_file"
+		max_size="$current_size"
+		current_size=$((current_size * 2))
+	else
+		break
+	fi
+done
+
+printf "%d\n" "$max_size"
+

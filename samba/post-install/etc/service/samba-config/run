@@ -8,6 +8,7 @@ declare date time dir file
 while read -r date time file; do
 	echo "${date} ${time}: ${file} modified"
 	if testparm -s; then
+		inspect-xattr
 		smbcontrol all reload-config
 	else
 		echo "smb.conf is invalid!!"

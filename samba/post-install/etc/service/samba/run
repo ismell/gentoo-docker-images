@@ -8,4 +8,6 @@ sv check /etc/service/avahi
 
 testparm -s
 
+inspect-xattr
+
 exec /usr/sbin/smbd --log-stdout --foreground

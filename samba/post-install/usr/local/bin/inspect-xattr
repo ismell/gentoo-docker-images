@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -eu -o pipefail
+
+declare -a SHARES
+
+readarray -t SHARES < <(
+	testparm -s 2>/dev/null | sed -n -E 's/^\s*path\s*=\s*(.*)$/\1/p'
+)
+
+declare SHARE
+declare -i XATTR_SIZE
+
+for SHARE in "${SHARES[@]}"; do
+	if [[ ! -d "$SHARE" ]]; then
+		break
+	fi
+
+	XATTR_SIZE="$(find-max-xattr "$SHARE")"
+
+	if [[ "$XATTR_SIZE" -eq 0 ]]; then
+		echo -en "\e[33mWARNING: "
+		echo "$SHARE does not support xattrs"
+	else
+		echo "Max xattr $XATTR_SIZE KiB for $SHARE"
+	fi
+done
