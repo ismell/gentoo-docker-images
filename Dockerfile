@@ -117,7 +117,11 @@ RUN --mount=type=bind,target=/var/db/repos/gentoo,source=/var/db/repos/gentoo,fr
 	   --binpkg-changed-deps=y \
 	   --tree \
 	   -vj \
-	   @samba && \
+	   @samba
+RUN \
+    mkdir /data && \
+    mv /home /data/home && \
+    useradd -D --base-dir /data/home && \
     rm -f /etc/avahi/services/* \
     rm -r /var/lib/samba/private && \
     ln -Ts /config/samba/smb.conf /etc/samba/smb.conf && \

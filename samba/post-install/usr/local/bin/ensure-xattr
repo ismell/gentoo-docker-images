@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -eu -o pipefail
+
+if [[ "$#" -lt 1 ]]; then
+	echo "Usage: $0 <path>"
+	exit 1
+fi
+
+declare -i XATTR_SIZE
+declare SHARE="$1"
+
+XATTR_SIZE="$(find-max-xattr "$SHARE")"
+
+if [[ "$XATTR_SIZE" -ne 0 ]]; then
+	echo "ERROR: $SHARE does not support xattrs"
+	exit 1
+fi
