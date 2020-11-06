@@ -1,4 +1,10 @@
-#!/bin/bash -x
+#!/bin/bash
+
+[[ "$DEBUG" -ge 1 ]] && set -x
+
+if [[ ! -e /run/dbus/system_bus_socket ]]; then
+	exit 1
+fi
 
 exec dbus-send --system      \
   --dest=org.freedesktop.DBus \

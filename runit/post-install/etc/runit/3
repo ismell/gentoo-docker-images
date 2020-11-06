@@ -1,6 +1,8 @@
-#!/bin/bash -x
+#!/bin/bash
 
-set -e -u -o pipefail
+[[ "$DEBUG" -ge 1 ]] && set -x
+
+set -eu -o pipefail
 
 PATH=/usr/local/bin:/usr/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin
 

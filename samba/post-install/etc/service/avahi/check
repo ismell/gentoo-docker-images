@@ -1,3 +1,5 @@
-#!/bin/bash -x
+#!/bin/bash
+
+[[ "$DEBUG" -ge 1 ]] && set -x
 
 exec /usr/sbin/avahi-daemon --check

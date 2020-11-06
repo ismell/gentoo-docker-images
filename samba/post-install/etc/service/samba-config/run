@@ -2,6 +2,8 @@
 
 exec 2>&1
 
+[[ "$DEBUG" -ge 1 ]] && set -x
+
 set -eu -o pipefail
 
 declare date time dir file
@@ -13,5 +15,5 @@ while read -r date time file; do
 	else
 		echo "smb.conf is invalid!!"
 	fi
-done < <(inotifywait -m --timefmt '%Y-%m-%d %H:%M' --format '%T %w %f' \
+done < <(exec inotifywait -m --timefmt '%Y-%m-%d %H:%M' --format '%T %w %f' \
 	-e close_write /config/samba/smb.conf)

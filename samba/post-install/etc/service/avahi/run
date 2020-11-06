@@ -1,9 +1,17 @@
-#!/bin/bash -x
+#!/bin/bash
 
 exec 2>&1
+
+[[ "$DEBUG" -ge 1 ]] && set -x
 
 set -eu -o pipefail
 
 sv check /etc/service/dbus
 
-exec /usr/sbin/avahi-daemon --debug
+declare -a ARGS
+
+if [[ -v DEBUG ]] && [[ "$DEBUG" -ge 1 ]]; then
+	ARGS+=(--debug)
+fi
+
+exec /usr/sbin/avahi-daemon "${ARGS[@]}"
