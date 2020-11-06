@@ -126,3 +126,6 @@ COPY samba/post-install/ /
 COPY util/passwd/post-install/ /
 VOLUME /config
 VOLUME /data
+EXPOSE 445
+EXPOSE 5353/udp
+
