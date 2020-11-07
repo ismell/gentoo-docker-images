@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[[ "$DEBUG" -ge 1 ]] && set -x
+
 set -eu -o pipefail
 
 function parse_file() {
