@@ -1,0 +1,34 @@
+#!/bin/bash
+
+exec 2>&1
+
+[[ "$DEBUG" -ge 1 ]] && set -x
+
+set -eu -o pipefail
+
+sv check /etc/service/samba
+
+declare -a ARGS
+
+mkdir -p /run/wsdd
+
+ARGS+=(
+	-u daemon:daemon
+	-c /run/wsdd
+	--shortlog
+)
+if [[ -v DEBUG ]] && [[ "$DEBUG" -ge 1 ]]; then
+	ARGS+=(-vv)
+fi
+
+declare -a WORKGROUP
+
+readarray -t WORKGROUP < <(
+	testparm -s 2>/dev/null | sed -n -E 's/^\s*workgroup\s*=\s*(.*)$/\1/p'
+)
+
+if [[ "${#WORKGROUP[@]}" -eq 1 ]]; then
+	ARGS+=(--workgroup "${WORKGROUP[0]}")
+fi
+
+exec /usr/bin/wsdd "${ARGS[@]}"

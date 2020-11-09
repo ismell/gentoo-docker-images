@@ -130,6 +130,9 @@ COPY samba/post-install/ /
 COPY util/passwd/post-install/ /
 VOLUME /config
 VOLUME /data
+# Samba CIFS port
 EXPOSE 445
+# Avahi mDNS multicast
 EXPOSE 5353/udp
-
+# WSDD incoming and multicast
+EXPOSE 5357/tcp 3702/udp
