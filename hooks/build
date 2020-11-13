@@ -1,0 +1,19 @@
+#!/bin/bash -x
+
+set -eu -o pipefail
+
+env
+
+declare TARGET="${DOCKER_REPO#gentoo-}"
+
+declare -a ARGS
+
+ARGS+=(
+	-f "$DOCKERFILE_PATH"
+	-t "$IMAGE_NAME"
+	--progress plain
+	--target "$TARGET"
+)
+
+docker build "${ARGS[@]}" .
+
