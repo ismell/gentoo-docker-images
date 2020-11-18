@@ -6,7 +6,7 @@
 FROM gentoo/portage:latest as portage
 
 # base gentoo image
-FROM gentoo/stage3-amd64-hardened-nomultilib:latest as base
+FROM gentoo/stage3:amd64-hardened-nomultilib as base
 
 # We can't use any sandboxing in the container.
 ENV FEATURES="-ipc-sandbox -mount-sandbox -network-sandbox -pid-sandbox -sandbox -usersandbox"
