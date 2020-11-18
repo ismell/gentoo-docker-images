@@ -1,4 +1,6 @@
 # syntax = docker/dockerfile:1.0-experimental
+# Copyright 2020 - 2020, Raul E Rangel
+# SPDX-License-Identifier: GPL-2.0-or-later
 
 # name the portage image
 FROM gentoo/portage:latest as portage
