@@ -10,12 +10,16 @@ readarray -t SHARES < <(
 	testparm -s 2>/dev/null | sed -n -E 's/^\s*path\s*=\s*(.*)$/\1/p'
 )
 
+declare NEW_HOME
+NEW_HOME="$(sed -n -e 's/^HOME=//p' /etc/default/useradd)"
+SHARES+=("$NEW_HOME")
+
 declare SHARE
 declare -i XATTR_SIZE
 
 for SHARE in "${SHARES[@]}"; do
 	if [[ ! -d "$SHARE" ]]; then
-		break
+		continue
 	fi
 
 	XATTR_SIZE="$(find-max-xattr "$SHARE")"
