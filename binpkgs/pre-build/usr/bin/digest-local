@@ -1,3 +1,5 @@
 #!/bin/bash
+# Copyright 2020 - 2020, Raul E Rangel
+# SPDX-License-Identifier: GPL-2.0-or-later
 
 find /var/db/repos/local/ -iname '*.ebuild' -exec ebuild '{}' digest \; 
