@@ -4,9 +4,7 @@
 
 set -eu -o pipefail
 
-env
-
-declare TARGET="${DOCKER_REPO#gentoo-}"
+declare TARGET="${DOCKER_REPO#*/gentoo-}"
 
 declare -a ARGS
 
